@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+typedef void ControllerCompletedCallback(int name);
+
 class IntroSlider extends StatefulWidget {
   /// An array of Slide object
   final List<Slide> slides;
@@ -112,6 +114,9 @@ class IntroSlider extends StatefulWidget {
   // ---------- Behavior ----------
   /// Whether or not the slider is scrollable (or controlled only by buttons)
   final bool isScrollable;
+    
+  /// Callback invoked when controller page changed complete
+  final ControllerCompletedCallback callback;
 
   // Constructor
   IntroSlider({
@@ -159,6 +164,7 @@ class IntroSlider extends StatefulWidget {
     this.sizeDot,
     this.shouldHideStatusBar,
     this.isScrollable,
+    this.callback,
   });
 
   @override
@@ -208,6 +214,7 @@ class IntroSlider extends StatefulWidget {
         sizeDot: this.sizeDot,
         shouldHideStatusBar: this.shouldHideStatusBar,
         isScrollable: this.isScrollable,
+        callback: this.callback,
       );
 }
 
@@ -221,6 +228,9 @@ class IntroSliderState extends State<IntroSlider>
   static Color defaultBtnColor = Colors.transparent;
 
   static Color defaultBtnHighlightColor = Colors.white.withOpacity(0.3);
+    
+  /// callback Call On Slide Shift
+  ControllerCompletedCallback callback;
 
   /// An array of Slide object
   final List<Slide> slides;
@@ -381,6 +391,7 @@ class IntroSliderState extends State<IntroSlider>
     // Behavior
     @required this.isScrollable,
     @required this.height,
+    this.callback,
   });
 
   TabController tabController;
@@ -394,6 +405,9 @@ class IntroSliderState extends State<IntroSlider>
 
     tabController = new TabController(length: slides.length, vsync: this);
     tabController.addListener(() {
+      if(callback != null){
+        callback(tabController.index);
+      }
       // To change dot color
       this.setState(() {});
     });
