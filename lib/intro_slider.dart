@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 typedef void ControllerCompletedCallback(int name);
 
@@ -756,7 +755,7 @@ class IntroSliderState extends State<IntroSlider>
             // Image or Center widget
             GestureDetector(
               child: pathImage != null
-                  ? SvgPicture.asset(
+                  ? Image.asset(
                 pathImage,
                 width: 300,
               )
